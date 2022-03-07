@@ -1,5 +1,7 @@
 import User from '../models/User.js'
 import generateId from '../helpers/generateId.js';
+import generateJWT from '../helpers/generateJWT.js';
+
 
 
 const register = async (req, res) => {
@@ -49,7 +51,8 @@ const authenticate = async (req, res) => {
         res.json({
             _id: user._id,
             name: user.name,
-            email: user.email
+            email: user.email,
+            token: generateJWT(user._id)
         })    
     } else {
         const error = new Error('The password is incorrect');
