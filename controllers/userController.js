@@ -27,7 +27,11 @@ const register = async (req, res) => {
     
 };
 
+const authenticate = (req, res) => {
+    
+}
 
 export {
-    register
+    register,
+    authenticate
 }
