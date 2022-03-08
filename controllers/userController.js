@@ -76,9 +76,27 @@ const confirm = async (req, res) => {
         userConfirm.confirmed = true;
         userConfirm.token = '';
         await userConfirm.save();
-        res.json({ msg: 'User confirm successfull' });
+        res.json({ msg: 'User confirmed successfull' });
 
         //console.log( userConfirm );
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+const forgetPassword = async (req, res) => {
+    
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+    if( !user ) {
+        const error = new Error('The user not exist');
+        return res.status(404).json({ msg: error.message });
+    }
+
+    try {
+        user.token = generateId();
+        await user.save();
+        res.json({ msg: 'We have sent an email with the instruccions' });
     } catch (error) {
         console.log(error);
     }
@@ -87,5 +105,6 @@ const confirm = async (req, res) => {
 export {
     register,
     authenticate,
-    confirm
+    confirm,
+    forgetPassword
 }
