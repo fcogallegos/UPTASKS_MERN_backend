@@ -136,7 +136,11 @@ const newPassword = async (req, res) => {
         const error = new Error('Token is invalid');
         return res.status(404).json({ msg: error.message });
     }
+};
 
+const profile = async (req, res) => {
+
+    console.log('from profile'); 
 };
 
 export {
@@ -145,5 +149,6 @@ export {
     confirm,
     forgetPassword,
     checkToken,
-    newPassword
+    newPassword,
+    profile
 }
