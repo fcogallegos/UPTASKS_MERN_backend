@@ -102,9 +102,24 @@ const forgetPassword = async (req, res) => {
     }
 };
 
+const checkToken = async (req, res) => {
+
+    const { token } = req.params;
+
+    const tokenValid = await User.findOne({ token });
+
+    if( tokenValid ) {
+        res.json({ msg: "Token valid and the user exist" });
+    } else {
+        const error = new Error('Token is invalid');
+        return res.status(404).json({ msg: error.message });
+    }
+};
+
 export {
     register,
     authenticate,
     confirm,
-    forgetPassword
+    forgetPassword,
+    checkToken
 }
