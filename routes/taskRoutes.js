@@ -12,7 +12,7 @@ import checkAuth from "../middleware/checkAuth.js";
 
 const router = express.Router();
 
-router.post('/post', checkAuth, addTask);
+router.post('/', checkAuth, addTask);
 router.route('/:id')
         .get(checkAuth, getTask)
         .put(checkAuth,updateTask)
