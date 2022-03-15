@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Project from "../models/Project.js";
+import Task from "../models/Task.js";
 
 
 
@@ -42,7 +43,14 @@ const getProject = async (req, res) => {
         return res.status(404).json({ msg: error.message });
     }
 
-    res.json( project );
+    //get project tasks
+    const tasks = await Task.find().where('project').equals(project._id);
+    //const response = { ...project, ...tasks };
+
+    res.json({
+        project,
+        tasks
+    });
  };
 
 const editProject = async (req, res) => { 
@@ -105,8 +113,19 @@ const addCollaborator = async (req, res) => { };
 
 const deleteCollaborator = async (req, res) => { };
 
-const getTasks = async (req, res) => { };
+//const getTasks = async (req, res) => { 
+//    const { id } = req.params;
+//
+//    if( !mongoose.Types.ObjectId.isValid(id) ) {
+//        const error = new Error('Not found');
+//        return res.status(404).json({ msg: error.message });
+//    }
+//
+//    const tasks = await Task.find().where('project').equals(id);
+//
+//    res.json(tasks);
+//};
 
 export {
-    getProjects, newProject, getProject, editProject, deleteProject, addCollaborator, deleteCollaborator, getTasks
+    getProjects, newProject, getProject, editProject, deleteProject, addCollaborator, deleteCollaborator
 }

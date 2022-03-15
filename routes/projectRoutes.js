@@ -1,7 +1,7 @@
 import express from 'express';
 
 import { 
-    getProjects, newProject, getProject, editProject, deleteProject, addCollaborator, deleteCollaborator, getTasks
+    getProjects, newProject, getProject, editProject, deleteProject, addCollaborator, deleteCollaborator
 } from '../controllers/projectController.js';
 import checkAuth from '../middleware/checkAuth.js';
  
@@ -19,7 +19,7 @@ router
     .put(checkAuth, editProject)
     .delete(checkAuth, deleteProject)
 
-router.get('/tasks/:id', checkAuth, getTasks);
+//router.get('/tasks/:id', checkAuth, getTasks);
 router.post('/add-collaborator/:id', checkAuth, addCollaborator);
 router.post('/delete-collaborator/:id', checkAuth, deleteCollaborator);    
 
