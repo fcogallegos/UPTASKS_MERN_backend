@@ -4,13 +4,13 @@ export const emailRegister = async (data) => {
 
     const { name, email, token } = data;
 
-    //TODO: move to environment variables
+
     const transport = nodemailer.createTransport({
-        host: "smtp.mailtrap.io",
-        port: 2525,
+        host: process.env.EMAIL_HOST,
+        port: process.env.EMAIL_PORT,
         auth: {
-          user: "22c95861b8b1d7",
-          pass: "d9f822114c0787"
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASS
         }
     });
 
@@ -37,13 +37,12 @@ export const emailForgotPassword = async (data) => {
 
     const { name, email, token } = data;
 
-    //TODO: move to environment variables
     const transport = nodemailer.createTransport({
-        host: "smtp.mailtrap.io",
-        port: 2525,
+        host: process.env.EMAIL_HOST,
+        port: process.env.EMAIL_PORT,
         auth: {
-          user: "22c95861b8b1d7",
-          pass: "d9f822114c0787"
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASS
         }
     });
 
@@ -59,7 +58,7 @@ export const emailForgotPassword = async (data) => {
 
             <p>to reset your password follow the next link to generate a new password:</p>
             
-            <a href="${process.env.FRONTEND_URL}/forgot-password/${token}">Restore password</a>
+            <a href="${process.env.FRONTEND_URL}/forget-password/${token}">Restore password</a>
 
             <p>If you did not requested this email you can ignore this message.</p>
             <p>Greetings.</p>
