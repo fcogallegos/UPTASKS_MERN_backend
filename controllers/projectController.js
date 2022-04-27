@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import Project from "../models/Project.js";
-import Task from "../models/Task.js";
+import User from "../models/User.js";
 
 
 
@@ -35,7 +35,7 @@ const getProject = async (req, res) => {
         return res.status(404).json({ msg: error.message });
     }
 
-    const project = await Project.findById(id);
+    const project = await Project.findById(id).populate('tasks');
     
     
     if( project.creator.toString() !== req.user._id.toString() ) {
@@ -104,6 +104,18 @@ const deleteProject = async (req, res) => {
     }
 };
 
+const searchCollaborator = async (req, res) => {
+    const { email } = req.body;
+    const user = await User.findOne({email}).select('-confirmed -createdAt -password -updatedAt -token -__v');
+
+    if(!user) {
+        const error = new Error('User not found');
+        return res.status(400).json({msg: error.message});
+    }
+
+    res.json(user);
+ };
+
 const addCollaborator = async (req, res) => { };
 
 const deleteCollaborator = async (req, res) => { };
@@ -122,5 +134,12 @@ const deleteCollaborator = async (req, res) => { };
 //};
 
 export {
-    getProjects, newProject, getProject, editProject, deleteProject, addCollaborator, deleteCollaborator
+    getProjects, 
+    newProject, 
+    getProject, 
+    editProject, 
+    deleteProject, 
+    addCollaborator, 
+    deleteCollaborator,
+    searchCollaborator
 }

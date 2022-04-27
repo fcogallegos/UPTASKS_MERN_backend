@@ -1,7 +1,15 @@
 import express from 'express';
 
 import { 
-    getProjects, newProject, getProject, editProject, deleteProject, addCollaborator, deleteCollaborator
+    getProjects, 
+    newProject, 
+    getProject, 
+    editProject, 
+    deleteProject, 
+    searchCollaborator,
+    addCollaborator, 
+    deleteCollaborator,
+    
 } from '../controllers/projectController.js';
 import checkAuth from '../middleware/checkAuth.js';
  
@@ -20,7 +28,9 @@ router
     .delete(checkAuth, deleteProject)
 
 //router.get('/tasks/:id', checkAuth, getTasks);
-router.post('/add-collaborator/:id', checkAuth, addCollaborator);
-router.post('/delete-collaborator/:id', checkAuth, deleteCollaborator);    
+
+router.post('/collaborators', checkAuth, searchCollaborator);
+router.post('/collaborators/:id', checkAuth, addCollaborator);
+router.delete('/collaborators/:id', checkAuth, deleteCollaborator);    
 
 export default router;
