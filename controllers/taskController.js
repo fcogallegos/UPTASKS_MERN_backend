@@ -101,14 +101,41 @@ const deleteTask = async (req, res) => {
     }
  
     try {
-        await task.deleteOne();
+
+        const project = await Project.findById(task.project);
+        project.tasks.pull(task._id);
+
+        await Promise.allSettled([await project.save(), await task.deleteOne()]);
+
         res.json({ msg: 'Deleted task' });
     } catch (error) {
         console.log(error);
     }
 };
 
-const changeStatus = async (req, res) => {};
+const changeStatus = async (req, res) => {
+
+    const { id } = req.params;
+ 
+    if( !mongoose.Types.ObjectId.isValid(id) ) {
+         const error = new Error('Task not found');
+         return res.status(404).json({ msg: error.message });
+    }
+
+    const task = await Task.findById(id).populate('project');
+
+    if( task.project.creator.toString() !== req.user._id.toString() && !task.project.collaborators.some(
+        (collaborator) => collaborator._id.toString() === req.user._id.toString()) ) {
+            const error = new Error('Action not valid');
+            return res.status(403).json({ msg: error.message }); 
+   }
+
+   task.status = !task.status;
+   await task.save();
+   res.json({task});
+
+   //console.log(task);
+};
 
 export {
     addTask,
