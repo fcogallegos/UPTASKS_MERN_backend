@@ -131,8 +131,15 @@ const changeStatus = async (req, res) => {
    }
 
    task.status = !task.status;
+   task.completed = req.user._id;
    await task.save();
-   res.json({task});
+
+   const taskStored = await Task.findById(id)
+    .populate('project')
+    .populate('completed');
+
+   
+   res.json(taskStored);
 
    //console.log(task);
 };
